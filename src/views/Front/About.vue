@@ -68,18 +68,18 @@
       </div>
     </div>
   </div>
-  <callToAction></callToAction>
+  <cta></cta>
   <footerSection></footerSection>
 </template>
 
 <script>
 import footerSection from '../../components/Footer.vue'
-import callToAction from '../../components/CallToAction.vue'
+import cta from '../../components/CallToAction.vue'
 
 export default {
   components: {
     footerSection,
-    callToAction
+    cta
   }
 }
 </script>

@@ -23,7 +23,7 @@
       </div>
     </div>
   </nav>
-  <router-view></router-view>
+  <router-view v-if="isRouterAlive"></router-view>
 </template>
 
 <script>
@@ -33,12 +33,18 @@ import dropdown from '../components/DropDownModal.vue'
 export default {
   data () {
     return {
-      cart: {},
+      cart: { carts: {} },
       classList: {
         'bg-color': 'bg-secondary',
         'text-color': 'text-primary',
         'i-color': ''
-      }
+      },
+      isRouterAlive: true
+    }
+  },
+  provide () {
+    return {
+      reload: this.reload
     }
   },
   components: {
@@ -56,6 +62,11 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    reload () {
+      console.log('reload occure')
+      this.isRouterAlive = false
+      this.$nextTick(() => { this.isRouterAlive = true })
     },
     scrollFunction () {
       const windowY = window.scrollY

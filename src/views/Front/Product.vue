@@ -117,6 +117,7 @@ export default {
       isLoading: false
     }
   },
+  inject: ['reload'],
   components: {
     footerSection
   },
@@ -130,6 +131,8 @@ export default {
             this.isLoading = false
             this.product = res.data.product
             this.getProducts()
+          } else if (res.data.message === '找不到產品') {
+            this.$router.push('/products')
           }
         })
         .catch(err => {
@@ -201,16 +204,11 @@ export default {
     },
     goToProduct (id) {
       this.$router.push(`/product/${id}`)
+      this.reload()
     }
   },
   created () {
     this.getProduct()
-  },
-  watch: {
-    $route (to, from) {
-      this.getProduct()
-      this.filterProducts = []
-    }
   }
 }
 </script>

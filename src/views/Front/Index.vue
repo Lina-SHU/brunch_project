@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  <coupon></coupon>
+  <couponSection></couponSection>
   <div class="hot-sale bg-secondary py-6">
     <div class="container">
       <h2 class="text-center mb-4 text-primary"><strong  class="border-bottom border-primary d-inline-block border-4 pb-2">經典熱銷</strong></h2>
@@ -89,14 +89,14 @@
       </swiper>
     </div>
   </div>
-  <callToAction></callToAction>
+  <cta></cta>
   <footerSection></footerSection>
 </template>
 
 <script>
-import coupon from '../../components/Coupon.vue'
+import couponSection from '../../components/Coupon.vue'
 import footerSection from '../../components/Footer.vue'
-import callToAction from '../../components/CallToAction.vue'
+import cta from '../../components/CallToAction.vue'
 import emitter from '../../assets/js/mitt'
 
 export default {
@@ -111,9 +111,9 @@ export default {
     }
   },
   components: {
-    coupon,
-    footerSection,
-    callToAction
+    couponSection,
+    cta,
+    footerSection
   },
   methods: {
     getProduct () {
