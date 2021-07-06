@@ -1,0 +1,64 @@
+@mixin banner {
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+  opacity: 0.8;
+  @include mobile{
+    height: 300px;
+  }
+}
+
+.index-heroheader{
+  background: url('https://i.imgur.com/IectzRH.jpg') no-repeat;
+  height: 100vh;
+  @include banner();
+  @include mobile{
+    height: 500px;
+  }
+}
+
+.coupon-banner{
+  height: 30vh;
+  background: url('https://i.imgur.com/yn2RVcA.jpg') no-repeat;
+  background-attachment: fixed;
+  @include banner();
+  @include mobile{
+    background-position: center center;
+  }
+}
+
+.about-heroheader{
+  background: url('https://i.imgur.com/WtJdRhL.jpg') no-repeat;
+  height: 500px;
+  @include banner();
+}
+
+.callToAction{
+  background: url('https://i.imgur.com/ui8Etjb.jpg') no-repeat;
+  @include banner();
+  height: 450px;
+  opacity: 1;
+}
+
+.scroll-banner{
+  height: 30vh;
+  background: url('https://i.imgur.com/tZn4CCh.jpg') no-repeat;
+  background-attachment: fixed;
+  width: 100%;
+  @include banner();
+  @include mobile{
+    background-position: center center;
+  }
+}
+
+.products-heroheader{
+  background: url('https://i.imgur.com/fXpRnOU.jpg') no-repeat;
+  height: 500px;
+  @include banner();
+}
+
+.carts-heroheader{
+  background: url('https://i.imgur.com/loGnhYc.jpg') no-repeat;
+  height: 300px;
+  @include banner();
+}
