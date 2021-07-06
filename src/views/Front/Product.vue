@@ -130,17 +130,6 @@ export default {
             this.isLoading = false
             this.product = res.data.product
             this.getProducts()
-          } else {
-            this.isLoading = false
-            this.$swal({
-              toast: true,
-              title: '找不到該餐點',
-              icon: 'error',
-              timer: 1500,
-              showConfirmButton: false,
-              position: 'top'
-            })
-            this.$router.push('/products')
           }
         })
         .catch(err => {
