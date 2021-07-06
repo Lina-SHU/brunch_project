@@ -130,7 +130,7 @@ export default {
             this.isLoading = false
             this.product = res.data.product
             this.getProducts()
-          } else if (res.data.messages === '找不到產品') {
+          } else {
             this.isLoading = false
             this.$swal({
               toast: true,
