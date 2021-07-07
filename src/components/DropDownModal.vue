@@ -1,16 +1,16 @@
 <template>
-  <loading v-model:active="isLoading">
-    <div class="loadingio-spinner-ellipsis-rg3crixpxzh">
-      <div class="ldio-zmt4lrj3aj">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  </loading>
   <div class="dropdown-menu dropdown-menu-end mt-2 p-3" style="min-width: 400px;">
+    <loading v-model:active="isLoading">
+      <div class="loadingio-spinner-ellipsis-rg3crixpxzh">
+        <div class="ldio-zmt4lrj3aj">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </loading>
     <template v-if="cartList.carts && cartList.carts.length !== 0">
       <div v-for="cart in cartList.carts" :key="cart.id+'1'" class="mb-3">
         <div class="d-flex justify-content-between align-items-center">

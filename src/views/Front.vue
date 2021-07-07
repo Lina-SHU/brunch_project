@@ -6,7 +6,7 @@
       </button>
       <router-link class="navbar-brand me-0 me-lg-1 flex-fill text-center text-lg-start" to="/"><h1 class="logo m-0" :class="classList['text-color']">FRESHBRUNCH</h1></router-link>
       <div class="dropdown cart-icon order-2">
-        <a href="#" class="btn btn-secondary nav-link position-relative border-0 dropdown-btn px-2" type="button" data-bs-toggle="dropdown"  data-bs-auto-close="outside" :class="classList['bg-color']">
+        <a href="#" class="btn btn-secondary position-relative border-0 dropdown-btn px-2" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" :class="classList['bg-color']">
           <i class="material-icons" style="font-size:28px;" :class="classList['i-color']">shopping_cart</i>
           <div class="cart-number rounded-pill bg-danger text-white position-absolute px-2" v-if="cart.carts">
             {{ cart.carts.length }}
@@ -23,7 +23,7 @@
       </div>
     </div>
   </nav>
-  <router-view v-if="isRouterAlive"></router-view>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -38,13 +38,7 @@ export default {
         'bg-color': 'bg-secondary',
         'text-color': 'text-primary',
         'i-color': ''
-      },
-      isRouterAlive: true
-    }
-  },
-  provide () {
-    return {
-      reload: this.reload
+      }
     }
   },
   components: {
@@ -62,11 +56,6 @@ export default {
         .catch(err => {
           console.log(err)
         })
-    },
-    reload () {
-      console.log('reload occure')
-      this.isRouterAlive = false
-      this.$nextTick(() => { this.isRouterAlive = true })
     },
     scrollFunction () {
       const windowY = window.scrollY
