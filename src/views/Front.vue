@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg opacity-85 fixed-top" :class="[classList['bg-color'], classList['navbar-color']]">
+  <nav class="navbar navbar-expand-lg opacity-90 fixed-top" :class="[classList['bg-color'], classList['navbar-color']]">
     <div class="container position-relative">
       <button class="navbar-toggler px-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="material-icons" style="font-size:28px;" >menu</span>
