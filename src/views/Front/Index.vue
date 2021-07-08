@@ -69,7 +69,7 @@
           }"
         >
           <swiper-slide v-for="hot in hotProduct" :key="hot.id">
-            <div class="card h-100 shadow border-0">
+            <div class="card shadow border-0 h-100">
               <div class="card-img position-relative">
                 <div class="product-content position-absolute">
                   <router-link :to="{path: `/product/${hot.id}`}" class="text">{{ hot.content }}</router-link>
@@ -77,12 +77,12 @@
                 <div class="new-img" :style="{ 'background-image' : `url(${hot.imageUrl}` }" style="background-size: cover; background-position: 20% center;"></div>
               </div>
               <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center h-100">
                   <div class="content">
                     <h5 class="card-title"><strong>{{ hot.title }}</strong></h5>
                     <p class="card-text">售價：{{ hot.price }}</p>
                   </div>
-                  <a href="#" class="btn btn-primary d-flex align-items-center" @click.prevent="addToCart(`${hot.id}`)"><i class="material-icons">add_shopping_cart</i><span class="d-none d-md-inline">加入購物車</span></a>
+                  <a href="#" class="btn btn-primary d-flex align-items-center" @click.prevent="addToCart(`${hot.id}`)"><i class="material-icons">add_shopping_cart</i><span class="d-none d-lg-inline">加入購物車</span></a>
                 </div>
               </div>
             </div>
