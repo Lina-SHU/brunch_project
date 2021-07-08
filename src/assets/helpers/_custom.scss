@@ -12,10 +12,13 @@ a{
 
 .about-content{
   position: relative;
-  height: 400px;
+  height: 550px;
+  @include mobile{
+    height: 400px;
+  }
   .about-img{
     position: absolute;
-    top: 30px;
+    top: 10%;
     left: 0;
     z-index: 2;
     @include mobile{
@@ -26,7 +29,6 @@ a{
     position: absolute;
     top: 0;
     left: 47%;
-    width: 60%;
     @include mobile{
       top: 0;
       left: 0;

@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown-menu dropdown-menu-end mt-2 p-3" style="min-width: 400px;">
-    <template v-if="cartList.carts && cartList.carts.length !== 0">
+    <div v-if="cartList.carts && cartList.carts.length !== 0">
       <div v-for="cart in cartList.carts" :key="cart.id+'1'" class="mb-3">
         <div class="d-flex justify-content-between align-items-center">
           <div class="cart-content d-flex">
@@ -21,13 +21,13 @@
       <div class="d-grid gap-2">
         <router-link to="/cart" class="btn btn-primary">結帳去</router-link>
       </div>
-    </template>
-    <template v-else>
+    </div>
+    <div v-else>
       <p class="text-center">購物車是空的唷！</p>
       <div class="d-grid gap-2">
         <router-link to="/products" class="btn btn-primary">訂餐去</router-link>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 

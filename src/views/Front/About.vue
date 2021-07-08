@@ -9,10 +9,10 @@
     </div>
     <div class="container">
       <div class="about-content">
-        <div data-aos="fade-left" class="about-img">
-          <img src="https://i.imgur.com/xIm3uBq.jpg" alt="about" class="img-fiuld w-50">
+        <div class="about-img">
+          <img src="https://i.imgur.com/xIm3uBq.jpg" alt="about" class="img-fiuld w-lg-50 shadow">
         </div>
-        <div data-aos="fade-up" class="bg-secondary p-md-6 p-4 shadow-sm about-text">
+        <div data-aos="fade-up" class="bg-secondary p-md-6 p-4 shadow-sm about-text w-lg-50">
           <h3 class="text-primary mb-3">關於 FRESH BRUNCH</h3>
           <p>
             我們是充滿活力熱情的團隊，對早午餐的品質有著義無反顧的堅持，從食材挑選、製作到打包，注重衛生管理，確保您吃得安全，食得安心。
