@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-menu dropdown-menu-end mt-2 p-3" style="min-width: 400px;" ref="dropdown">
+  <div class="dropdown-menu dropdown-menu-end mt-2 p-3" style="min-width: 400px;">
     <div v-if="cartList.carts && cartList.carts.length !== 0">
       <div v-for="cart in cartList.carts" :key="cart.id+'1'" class="mb-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -7,7 +7,7 @@
             <a href="#" @click.prevent="deleteCart(cart.id)" class=" d-flex-center align-items-center"><i class="btn-outline-danger border-0 rounded-2 material-icons p-1">delete</i></a>
             <div :style="{ 'background-image' : `url(${cart.product.imageUrl}` }" style="background-size: cover; background-position: center center; height: 50px; width: 80px;"></div>
             <div class="cart-item ms-2">
-              <h4 class="fs-6 m-0">{{ cart.product.title }}</h4>
+              <router-link :to="{ path: `/product/${cart.product.id}`}" class="cartProduct fs-6 m-0">{{ cart.product.title }}</router-link>
               <small class="fs-6">${{ $toCurrency(`${cart.total}`) }}</small>
             </div>
           </div>
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="d-grid gap-2">
-        <button class="btn btn-primary" @click="goToCart">結帳去</button>
+        <router-link to="/cart" class="btn btn-primary">結帳去</router-link>
       </div>
     </div>
     <div v-else>
@@ -38,8 +38,7 @@ export default {
   data () {
     return {
       cartList: {},
-      isLoading: false,
-      dropdown: ''
+      isLoading: false
     }
   },
   props: ['cart'],
@@ -107,9 +106,6 @@ export default {
             })
           }
         })
-    },
-    goToCart () {
-      this.$router.push('/cart')
     }
   },
   watch: {

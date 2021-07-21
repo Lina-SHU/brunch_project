@@ -6,13 +6,13 @@
       </button>
       <router-link class="navbar-brand me-0 me-lg-1 flex-fill text-center text-lg-start" to="/"><h1 class="logo m-0" :class="classList['text-color']">FRESHBRUNCH</h1></router-link>
       <div class="dropdown cart-icon order-2">
-        <a href="#" class="btn btn-secondary position-relative border-0 dropdown-btn px-2" type="button" :class="classList['bg-color']" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+        <a href="#" class="btn btn-secondary position-relative border-0 dropdown-btn px-2" type="button" :class="classList['bg-color']" data-bs-toggle="dropdown" data-bs-display="static">
           <i class="material-icons" style="font-size:28px;" :class="classList['i-color']">shopping_cart</i>
           <div class="cart-number rounded-pill bg-danger text-white position-absolute px-2" v-if="cart.carts">
             {{ cart.carts.length }}
           </div>
         </a>
-        <DropDown :cart="cart" @get-cart="getCart" ref="dropdown"></DropDown>
+        <DropDown :cart="cart" @get-cart="getCart"></DropDown>
       </div>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav align-items-center fs-5 ms-auto mb-2 mb-lg-0">
@@ -65,9 +65,6 @@ export default {
             })
           }
         })
-    },
-    toggleDropDown () {
-      this.$refs.dropdown.toggleDropDown()
     },
     scrollFunction () {
       const windowY = window.scrollY

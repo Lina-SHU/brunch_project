@@ -27,7 +27,7 @@
                   <button class="btn btn-sm btn-outline-primary" type="button" @click="editCart(cart, cart.qty+1)"><i class="material-icons">add</i></button>
                 </div>
               </td>
-              <td class="text-end">{{ $toCurrency(`${cart.total}`) }}</td>
+              <td class="text-end">{{ $toCurrency(cart.total) }}</td>
             </tr>
           </template>
           <template v-else>
@@ -42,30 +42,35 @@
         <tfoot>
           <tr>
             <td colspan="5" class="fw-bold text-end fs-5">
-              結帳金額：   NT$ {{ $toCurrency(`${carts.total}`) }}
+              結帳金額：  NT$ {{ $toCurrency(`${carts.total}`) }}
             </td>
           </tr>
         </tfoot>
       </table>
     </div>
     <div class="d-lg-none">
-      <ul class="list-unstyled" v-if="carts.carts && carts.carts.length !== 0">
-        <li v-for="cart in carts.carts" :key="cart.id+1" class="shadow p-3 mb-2">
-          <div class="d-flex justify-content-between mb-3">
-            <a href="#" @click.prevent="deleteCart(cart.id)" class="d-flex-center align-items-center"><i class="btn-outline-danger border-0 rounded-2 material-icons p-1">delete</i></a>
-            <div class="product-img shadow-sm w-50" :style="{ 'background-image' : `url(${cart.product.imageUrl}` }" style="background-size: cover; background-position: 30% center; height: 75px;"></div>
-            <router-link :to="{ path: `/product/${cart.product.id}`}" class="cartProduct d-flex-center align-items-center px-2">{{ cart.product.title }}</router-link>
-          </div>
-          <div class="d-flex justify-content-between">
-            <div class="input-group w-50">
-              <button class="btn btn-sm btn-outline-primary" type="button" :class="{ disabled: cart.qty <= 1 }"><i class="material-icons" @click="editCart(cart, cart.qty-1)">remove</i></button>
-              <input type="number" min="1" class="form-control qty-input" disabled v-model.number="cart.qty">
-              <button class="btn btn-sm btn-outline-primary" type="button" @click="editCart(cart, cart.qty+1)"><i class="material-icons">add</i></button>
+      <div v-if="carts.carts && carts.carts.length !== 0">
+        <ul class="list-unstyled">
+          <li v-for="cart in carts.carts" :key="cart.id+1" class="shadow p-3 mb-2">
+            <div class="d-flex justify-content-between mb-3">
+              <a href="#" @click.prevent="deleteCart(cart.id)" class="d-flex-center align-items-center"><i class="btn-outline-danger border-0 rounded-2 material-icons p-1">delete</i></a>
+              <div class="product-img shadow-sm w-50" :style="{ 'background-image' : `url(${cart.product.imageUrl}` }" style="background-size: cover; background-position: 30% center; height: 75px;"></div>
+              <router-link :to="{ path: `/product/${cart.product.id}`}" class="cartProduct d-flex-center align-items-center px-2">{{ cart.product.title }}</router-link>
             </div>
-            <p class="m-0 d-flex-center align-items-center">金額： NT ${{ $toCurrency(`${cart.total}`) }}</p>
-          </div>
-        </li>
-      </ul>
+            <div class="d-flex justify-content-between">
+              <div class="input-group w-50">
+                <button class="btn btn-sm btn-outline-primary" type="button" :class="{ disabled: cart.qty <= 1 }"><i class="material-icons" @click="editCart(cart, cart.qty-1)">remove</i></button>
+                <input type="number" min="1" class="form-control qty-input" disabled v-model.number="cart.qty">
+                <button class="btn btn-sm btn-outline-primary" type="button" @click="editCart(cart, cart.qty+1)"><i class="material-icons">add</i></button>
+              </div>
+              <p class="m-0 d-flex-center align-items-center">金額： NT ${{ $toCurrency(cart.total) }}</p>
+            </div>
+          </li>
+        </ul>
+        <div class="fw-bold text-end fs-5 mb-3 text-primary">
+          結帳金額： NT$ {{ $toCurrency(carts.total) }}
+        </div>
+      </div>
       <div v-else class="d-flex-center flex-column align-items-center mb-3 py-3 shadow-sm">
         <p class="text-center">購物車是空的唷！</p>
         <router-link to="/products" class="btn btn-primary px-5">訂餐去</router-link>
