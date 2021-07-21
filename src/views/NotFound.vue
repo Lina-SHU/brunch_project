@@ -22,7 +22,7 @@
           <router-link class="btn btn-primary btn-lg px-6 rounded-pill mt-2" to="/products">訂餐去</router-link>
         </div>
         <div class="col-md-4 mt-3 mt-lg-0">
-          <img src="https://i.imgur.com/Oug4xJ6.jpg" alt="login-img" class="img-fiuld login-image w-100 shadow">
+          <img src="https://storage.googleapis.com/vue-course-api.appspot.com/linachen/1626833763731.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=PUGfTIn3ue%2BDtd6rjTuvEx56%2Bru%2F7Sg%2FHrFObsH7pJRgTcWz6y%2FVfK%2FGQSGOQbRhBvzHpTvRMxF%2FSy2ECJnQWJug4geNzfYkvaL40Lm2VO84H%2FfI5CzU3y8K2ziC%2B0MnnVWpTNoJN36PcmVNUR2vlPj9gvlai%2BYGiFso0UyVQYi5JFUVic6CcMq89SJMpGlYgchZF47rZnORl6CFnTl3NkhHtiYzZ7tpCj%2Bcjoe7xsVQuFeOWO3VZcxhhqzQi%2F%2Fy9lsbD%2BcHs9Atq5bRV1jMYQwEa0P1UmP7XpJkU7wnKI6Iq5oIJq5Gp83u%2B2y1wKTsLQifqUgNistcmpQVESdWtg%3D%3D" alt="login-img" class="img-fiuld login-image w-100 shadow">
         </div>
       </div>
     </div>

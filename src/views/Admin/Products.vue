@@ -2,7 +2,9 @@
   <div>
     <loading v-model:active="isLoading"/>
     <div class="container py-3 mt-5">
-      <h1 class="text-center mb-4 text-primary fs-2"><strong class="border-bottom border-primary d-inline-block border-4 pb-2">商品管理</strong></h1>
+      <h1 class="text-center mb-4 text-primary fs-2">
+        <strong class="border-bottom border-primary d-inline-block border-4 pb-2">商品管理</strong>
+      </h1>
       <div class="d-flex justify-content-end">
         <button class="btn btn-primary" @click="updateModal('new')">新增商品</button>
       </div>
@@ -34,25 +36,15 @@
           </tr>
         </tbody>
       </table>
-      <pagination :pages="pagination" @get-list="getProduct"></pagination>
-      <updateModal ref="updateModal" :temp-product="tempProduct" :is-new="isNew"  @get-product="getProduct"></updateModal>
+      <Pagination :pages="pagination" @get-list="getProduct"></Pagination>
+      <UpdateModal ref="updateModal" :temp-product="tempProduct" :is-new="isNew"  @get-product="getProduct"></UpdateModal>
     </div>
   </div>
 </template>
 
-<style>
-.image{
-  height: 100px;
-  overflow: hidden;
-}
-img{
-  object-fit: cover;
-}
-</style>
-
 <script>
-import pagination from '../../components/Pagination.vue'
-import updateModal from '../../components/UpdateProductModal.vue'
+import Pagination from '@/components/Admin/Pagination.vue'
+import UpdateModal from '@/components/Admin/UpdateProductModal.vue'
 
 export default {
   data () {
@@ -65,8 +57,8 @@ export default {
     }
   },
   components: {
-    pagination,
-    updateModal
+    Pagination,
+    UpdateModal
   },
   methods: {
     getProduct (page = 1) {
@@ -81,7 +73,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法取得餐點列表，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     deleteProduct (id, page) {
@@ -103,7 +105,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法刪除餐點，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     updateModal (value, product) {
@@ -122,3 +134,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.image{
+  height: 100px;
+  overflow: hidden;
+}
+img{
+  object-fit: cover;
+}
+</style>

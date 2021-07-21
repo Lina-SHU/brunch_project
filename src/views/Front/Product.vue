@@ -1,16 +1,6 @@
 <template>
   <section>
-    <loading v-model:active="isLoading">
-      <div class="loadingio-spinner-ellipsis-rg3crixpxzh">
-        <div class="ldio-zmt4lrj3aj">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </loading>
+    <Loading :is-loading="isLoading"></Loading>
     <div class="products-heroheader mb-5">
       <div class="container">
         <h2 data-aos="flip-up" class="text-white position-absolute top-50 bg-black px-5 py-2 lh-base">
@@ -39,7 +29,9 @@
           <div class="input-group mb-3 mt-5 w-lg-50">
             <button class="btn btn-outline-primary" type="button" @click="changeQty('minus')" :class="{ disabled: qty <= 1 }"><i class="material-icons">remove</i></button>
             <input type="number" min="1" class="form-control qty-input" disabled v-model.number="qty">
-            <button class="btn btn-outline-primary" type="button" @click="changeQty('add')"><i class="material-icons">add</i></button>
+            <button class="btn btn-outline-primary" type="button" @click="changeQty('add')">
+              <i class="material-icons">add</i>
+            </button>
             <a href="#" @click.prevent="addToCart"><i class="material-icons ms-4 btn-outline-primary border-0 rounded-2 p-1" style="font-size:40px;">add_shopping_cart</i></a>
           </div>
         </div>
@@ -47,17 +39,13 @@
       <template v-if="product.imagesUrl && product.imagesUrl.length !==0">
         <h2 class="text-center mb-4 text-primary"><strong data-aos="flip-up" class="pb-2">嚴選食材</strong></h2>
         <div class="row d-flex-center">
-          <div class="col-md-8">
-            <div class="row d-flex-center">
-              <div class="col-md-4 mb-2 mb-lg-0" v-for="image in product.imagesUrl" :key="image">
-                <div class="ingredients opacity-75" :style="{ 'background-image' : `url(${image}` }" style="background-size: cover; background-position: 20% center; height: 250px;"></div>
-              </div>
-            </div>
-          </div>
+          <ProductMaterial :images-url="product.imagesUrl"></ProductMaterial>
         </div>
       </template>
       <hr>
-      <h2 class="text-center mb-4 text-primary"><strong data-aos="flip-up" class="border-4 pb-2">訂購須知</strong></h2>
+      <h2 class="text-center mb-4 text-primary">
+        <strong data-aos="flip-up" class="border-4 pb-2">訂購須知</strong>
+      </h2>
       <div class="d-flex-center">
         <ul class="list-unstyled w-lg-50">
           <li class="mb-2">※ 由於本商品為當日現做，且使用當日運送新鮮食材，故收到商品後，請於當日食用完畢；若當日未能食用完畢，請放置於冷藏。</li>
@@ -69,7 +57,9 @@
     </div>
     <div class="py-5 bg-secondary">
       <div class="container">
-        <h2 class="text-center text-primary"><strong data-aos="flip-up" class="border-bottom border-primary d-inline-block border-4 pb-2">同系列餐點</strong></h2>
+        <h2 class="text-center text-primary">
+          <strong data-aos="flip-up" class="border-bottom border-primary d-inline-block border-4 pb-2">同系列餐點</strong>
+        </h2>
         <div class="row mt-5">
           <div class="col-md-3 mb-2" v-for="product in filterProducts" :key="product.id">
             <div class="card h-100 shadow border-0">
@@ -86,7 +76,7 @@
                     <del class="me-2">原價： {{ product.origin_price }} 元</del>
                     <p class="fw-bold card-text text-danger fs-5">優惠價：{{ product.price }} 元</p>
                   </div>
-                  <a href="#" class="btn addCartBtn" @click.prevent="addToCart(product.id)"><i class="material-icons" style="font-size:32px;" >add_shopping_cart</i></a>
+                  <a href="#" class="btn addCartBtn" @click.prevent="addToCart(product.id)"><i class="material-icons" style="font-size:32px;">add_shopping_cart</i></a>
                 </div>
               </div>
             </div>
@@ -94,13 +84,15 @@
         </div>
       </div>
     </div>
-    <footerSection></footerSection>
+    <FooterSection></FooterSection>
   </section>
 </template>
 
 <script>
-import emitter from '../../assets/js/mitt'
-import footerSection from '../../components/Footer.vue'
+import emitter from '@/assets/js/mitt'
+import FooterSection from '@/components/Front/Footer.vue'
+import ProductMaterial from '@/components/Front/ProductMaterial.vue'
+import Loading from '@/components/Front/Loading.vue'
 
 function getRandomInt (max) {
   return Math.floor(Math.random() * max)
@@ -120,7 +112,9 @@ export default {
     }
   },
   components: {
-    footerSection
+    FooterSection,
+    Loading,
+    ProductMaterial
   },
   methods: {
     getProduct () {
@@ -137,7 +131,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法該餐點，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     getProducts () {
@@ -150,13 +154,21 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法餐點列表，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     getSameCategory () {
-      const filterData = this.products.filter((item) => {
-        return item.category === this.product.category
-      })
+      const filterData = this.products.filter((item) => item.category === this.product.category)
       const maxSize = filterData.length < 4 ? filterData.length : 4
       const arrSet = new Set([])
       for (let i = 0; arrSet.size < maxSize; i++) {
@@ -200,7 +212,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法加入購物車，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     goToProduct (id) {

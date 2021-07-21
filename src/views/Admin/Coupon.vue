@@ -30,15 +30,15 @@
           </tr>
         </tbody>
       </table>
-      <pagination :pages="pagination" @get-list="getCoupon"></pagination>
-      <updateModal ref="updateModal" :is-new="isNew" :temp-coupon="tempCoupon" @get-coupon="getCoupon"></updateModal>
+      <Pagination :pages="pagination" @get-list="getCoupon"></Pagination>
+      <UpdateModal ref="updateModal" :is-new="isNew" :temp-coupon="tempCoupon" @get-coupon="getCoupon"></UpdateModal>
     </div>
   </div>
 </template>
 
 <script>
-import pagination from '../../components/Pagination.vue'
-import updateModal from '../../components/UpdateCouponModal.vue'
+import Pagination from '@/components/Admin/Pagination.vue'
+import UpdateModal from '@/components/Admin/UpdateCouponModal.vue'
 
 export default {
   data () {
@@ -51,8 +51,8 @@ export default {
     }
   },
   components: {
-    pagination,
-    updateModal
+    Pagination,
+    UpdateModal
   },
   methods: {
     getCoupon (page = 1) {
@@ -67,7 +67,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法取得優惠券列表，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     updateModal (value, coupon) {
@@ -99,7 +109,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法刪除優惠券，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     }
   },

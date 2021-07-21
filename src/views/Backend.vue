@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <div class="container">
-        <a class="navbar-brand logo" href="#">FRESHBRUNCH 後台管理</a>
+        <router-link class="navbar-brand logo" to="/admin">FRESHBRUNCH 後台管理</router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -54,7 +54,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法登出，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     }
   },
@@ -71,7 +81,17 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err)
+        if (err) {
+          this.isLoading = false
+          this.$swal({
+            toast: true,
+            title: '無法檢查，請聯繫管理員',
+            icon: 'error',
+            timer: 1500,
+            showConfirmButton: false,
+            position: 'top'
+          })
+        }
       })
   }
 }

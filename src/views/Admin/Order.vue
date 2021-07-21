@@ -2,7 +2,9 @@
   <div>
     <loading v-model:active="isLoading"/>
     <div class="container py-3 mt-5">
-      <h1 class="text-center mb-4 text-primary fs-2"><strong class="border-bottom border-primary d-inline-block border-4 pb-2">訂單列表</strong></h1>
+      <h1 class="text-center mb-4 text-primary fs-2">
+        <strong class="border-bottom border-primary d-inline-block border-4 pb-2">訂單列表</strong>
+      </h1>
       <div class="d-flex justify-content-end">
         <button class="btn btn-danger" v-if="orderList.length >=2" @click="deleteAll">刪除所有訂單</button>
       </div>
@@ -32,15 +34,15 @@
           </tr>
         </tbody>
       </table>
-      <pagination :pages="pagination" @get-list="getOrder"></pagination>
-      <editModal ref="editModal" :temp-order='tempOrder' @get-order="getOrder"></editModal>
+      <Pagination :pages="pagination" @get-list="getOrder"></Pagination>
+      <EditModal ref="editModal" :temp-order='tempOrder' @get-order="getOrder"></EditModal>
     </div>
   </div>
 </template>
 
 <script>
-import pagination from '../../components/Pagination.vue'
-import editModal from '../../components/EditOrderModal.vue'
+import Pagination from '@/components/Admin/Pagination.vue'
+import EditModal from '@/components/Admin/EditOrderModal.vue'
 
 export default {
   data () {
@@ -52,8 +54,8 @@ export default {
     }
   },
   components: {
-    pagination,
-    editModal
+    Pagination,
+    EditModal
   },
   methods: {
     getOrder (page = 1) {
@@ -68,7 +70,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法取得訂單列表，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     deleteOrder (id) {
@@ -90,7 +102,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法刪除訂單，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     deleteAll () {
@@ -112,7 +134,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法清空訂單，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     editOrder (order) {

@@ -3,17 +3,7 @@
     <a href="#" @click.prevent="goTop" v-if="showTop">
       <span class="material-icons goToTop p-3 rounded-circle" style="font-size:32px;">arrow_upward</span>
     </a>
-    <loading v-model:active="isLoading">
-      <div class="loadingio-spinner-ellipsis-rg3crixpxzh">
-        <div class="ldio-zmt4lrj3aj">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </loading>
+    <Loading :is-loading="isLoading"></Loading>
     <div class="products-heroheader mb-5">
       <div class="container">
         <h2 data-aos="flip-up" class="text-white position-absolute top-50 bg-black px-5 py-2 lh-base">
@@ -23,19 +13,19 @@
     </div>
     <div class="container pb-6">
       <div class="row d-flex-center">
-        <div class="col-md-8">
+        <div class="col-lg-10">
           <div class="list-group list-group-horizontal fw-bold fs-5 flex-wrap justify-content-center">
-            <a href="#" class="list-group-item border-0 px-4 py-2 rounded-pill text-center" @click.prevent="filterCategory('')">
+            <a href="#" class="list-group-item border-0 px-3 py-2 rounded-pill text-center me-lg-2 me-1 mb-1" @click.prevent="selectCategory=''">
               全部餐點
             </a>
-            <a href="#" v-for="list in categoryList" :key="list" class="list-group-item border-0 px-4 py-2 rounded-pill text-center" @click.prevent="filterCategory(`${list}`)">{{ list }}</a>
+            <a href="#" v-for="list in categoryList" :key="list" class="list-group-item border-0 px-3 py-2 rounded-pill text-center me-lg-2 me-1 mb-1" @click.prevent="selectCategory=list">{{ list }}</a>
           </div>
         </div>
       </div>
       <div class="d-flex justify-content-end mt-5">
         <div class="input-group w-lg-25 position-relative">
           <i class="search-icon material-icons position-absolute top-0 left-0  p-1" style="font-size:32px">search</i>
-          <input type="text" class="form-control ps-5" placeholder="請輸入關鍵字" v-model="search" @change="searchProducts">
+          <input type="text" class="form-control ps-5" placeholder="請輸入關鍵字" v-model="search">
         </div>
       </div>
       <div class="row mt-3 d-flex-center">
@@ -61,22 +51,22 @@
         </div>
       </div>
     </div>
-    <coupon></coupon>
-    <footerSection></footerSection>
+    <Coupon></Coupon>
+    <FooterSection></FooterSection>
   </section>
 </template>
 
 <script>
-import emitter from '../../assets/js/mitt'
-import coupon from '../../components/Coupon.vue'
-import footerSection from '../../components/Footer.vue'
+import emitter from '@/assets/js/mitt'
+import Coupon from '@/components/Front/Coupon.vue'
+import FooterSection from '@/components/Front/Footer.vue'
+import Loading from '@/components/Front/Loading.vue'
 
 export default {
   data () {
     return {
       products: [],
       isLoading: false,
-      filterProducts: [],
       selectCategory: '',
       categoryList: [],
       showTop: false,
@@ -84,8 +74,9 @@ export default {
     }
   },
   components: {
-    coupon,
-    footerSection
+    Coupon,
+    FooterSection,
+    Loading
   },
   methods: {
     getProducts (value) {
@@ -96,21 +87,24 @@ export default {
           if (res.data.success) {
             this.isLoading = false
             this.products = res.data.products
-            this.filterCategory()
-            this.categoriies()
+            this.categories()
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法取得餐點列表，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
-    filterCategory (value) {
-      this.selectCategory = value
-      this.filterProducts = this.products.filter(item => {
-        return item.category.match(this.selectCategory)
-      })
-    },
-    categoriies () {
+    categories () {
       this.products.forEach(item => {
         if (this.categoryList.indexOf(item.category) === -1) {
           this.categoryList.push(item.category)
@@ -148,13 +142,18 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法加入購物車，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
-    },
-    searchProducts () {
-      this.filterProducts = this.products.filter((item) => {
-        return item.title.match(this.search)
-      })
     },
     scrollTop () {
       const windowY = window.scrollY
@@ -163,6 +162,15 @@ export default {
         this.showTop = true
       } else {
         this.showTop = false
+      }
+    }
+  },
+  computed: {
+    filterProducts () {
+      if (this.search) {
+        return this.products.filter((item) => item.title.match(this.search))
+      } else {
+        return this.products.filter((item) => item.category.match(this.selectCategory))
       }
     }
   },

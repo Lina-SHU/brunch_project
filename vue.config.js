@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/brunch_project/dist'
+  publicPath: '/brunch_project/'
 }

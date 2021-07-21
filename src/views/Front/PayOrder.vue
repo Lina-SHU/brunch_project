@@ -1,16 +1,6 @@
 <template>
   <section>
-    <loading v-model:active="isLoading">
-      <div class="loadingio-spinner-ellipsis-rg3crixpxzh">
-        <div class="ldio-zmt4lrj3aj">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </loading>
+    <Loading :is-loading="isLoading"></Loading>
     <div class="carts-heroheader mb-5">
       <div class="container">
         <h2 data-aos="flip-up" class="text-white position-absolute top-50 bg-black px-5 py-2 lh-base">
@@ -23,15 +13,25 @@
       <div class="row d-flex-center">
         <div class="col-md-6">
           <ul class="process d-flex justify-content-between list-unstyled">
-            <li class="circle rounded-circle text-center bg-primary text-white py-lg-4 py-3">1. <br><span class="d-none d-lg-inline">清單確認</span><i class="material-icons icons text-primary">navigate_next</i></li>
-            <li class="circle rounded-circle text-center bg-primary text-white py-lg-4 py-3">2. <br><span class="d-none d-lg-inline">資料填寫</span><i class="material-icons icons text-primary">navigate_next</i></li>
-            <li class="circle rounded-circle text-center bg-primary text-white py-lg-4 py-3">3. <br><span class="d-none d-lg-inline">付款確認</span><i class="material-icons icons text-primary">navigate_next</i></li>
-            <li class="circle rounded-circle text-center bg-secondary text-primary py-lg-4 py-3">4. <br><span class="d-none d-lg-inline">完成訂單</span></li>
+            <li class="circle rounded-circle text-center bg-primary text-white py-lg-4 py-3">
+              1. <br><span class="d-none d-lg-inline">清單確認</span>
+              <i class="material-icons icons text-primary">navigate_next</i>
+            </li>
+            <li class="circle rounded-circle text-center bg-primary text-white py-lg-4 py-3">
+              2. <br><span class="d-none d-lg-inline">資料填寫</span>
+              <i class="material-icons icons text-primary">navigate_next</i>
+            </li>
+            <li class="circle rounded-circle text-center bg-primary text-white py-lg-4 py-3">
+              3. <br><span class="d-none d-lg-inline">付款確認</span>
+              <i class="material-icons icons text-primary">navigate_next</i>
+            </li>
+            <li class="circle rounded-circle text-center bg-secondary text-primary py-lg-4 py-3">
+              4. <br><span class="d-none d-lg-inline">完成訂單</span>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-    <!-- -Md_9XfB1dsPj6VDlZ5o -->
     <div class="container">
       <div class="row d-flex-center">
         <div class="col-md-6">
@@ -43,17 +43,17 @@
                   <div class="order-content d-flex">
                     <div :style="{ 'background-image' : `url(${product.product.imageUrl}` }" style="background-size: cover; background-position: center center; height: 50px; width: 80px;"></div>
                     <div class="order-item ms-2">
-                      <h4 class='fs-6 m-0'>{{ product.product.title }}</h4>
-                      <small class='fs-6'>{{ product.qty }} {{ product.product.unit }}</small>
+                      <h4 class="fs-6 m-0">{{ product.product.title }}</h4>
+                      <small class="fs-6">{{ product.qty }} {{ product.product.unit }}</small>
                     </div>
                   </div>
-                  <small class='fs-6'>${{ $toCurrency(`${product.final_total}`) }}</small>
+                  <small class="fs-6">${{ $toCurrency(`${product.final_total}`) }}</small>
                 </div>
               </li>
             </ul>
             <div class="d-flex justify-content-between">
-              <p class='fs-4 fw-bold'>總計</p>
-              <p class='fs-4 fw-bold'>NT ${{ $toCurrency(`${order.total}`) }}</p>
+              <p class="fs-4 fw-bold">總計</p>
+              <p class="fs-4 fw-bold">NT ${{ $toCurrency(`${order.total}`) }}</p>
             </div>
           </div>
           <div class="bg-secondary p-4 mb-5">
@@ -82,23 +82,24 @@
                 </tr>
                 <tr>
                   <th scope="row">付款狀態</th>
-                  <td class="text-end text-danger fw-bold">{{ order.is_paid? "已付款" : "尚未付款"}}</td>
+                  <td class="text-end text-danger fw-bold">{{ order.is_paid ? "已付款" : "尚未付款"}}</td>
                 </tr>
               </tbody>
             </table>
             <div class="d-grid gap-2">
-              <button type="buton" class="btn btn-block btn-primary" @click="payConfirm">確認付款</button>
+              <button type="button" class="btn btn-block btn-primary" @click="payConfirm">確認付款</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <footerSection></footerSection>
+    <FooterSection></FooterSection>
   </section>
 </template>
 
 <script>
-import footerSection from '../../components/Footer.vue'
+import FooterSection from '@/components/Front/Footer.vue'
+import Loading from '@/components/Front/Loading.vue'
 
 export default {
   data () {
@@ -108,7 +109,8 @@ export default {
     }
   },
   components: {
-    footerSection
+    FooterSection,
+    Loading
   },
   methods: {
     getOrder () {
@@ -120,7 +122,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法取得訂單，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     payConfirm () {
@@ -141,7 +153,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法進行付款，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     }
   },

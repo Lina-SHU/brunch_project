@@ -2,21 +2,20 @@
   <nav class="navbar navbar-expand-lg opacity-90 fixed-top" :class="[classList['bg-color'], classList['navbar-color']]">
     <div class="container position-relative">
       <button class="navbar-toggler px-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="material-icons" style="font-size:28px;" >menu</span>
+        <span class="material-icons" style="font-size:28px;">menu</span>
       </button>
       <router-link class="navbar-brand me-0 me-lg-1 flex-fill text-center text-lg-start" to="/"><h1 class="logo m-0" :class="classList['text-color']">FRESHBRUNCH</h1></router-link>
       <div class="dropdown cart-icon order-2">
-        <a href="#" class="btn btn-secondary position-relative border-0 dropdown-btn px-2" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" :class="classList['bg-color']">
+        <a href="#" class="btn btn-secondary position-relative border-0 dropdown-btn px-2" type="button" :class="classList['bg-color']" data-bs-toggle="dropdown" data-bs-auto-close="outside">
           <i class="material-icons" style="font-size:28px;" :class="classList['i-color']">shopping_cart</i>
           <div class="cart-number rounded-pill bg-danger text-white position-absolute px-2" v-if="cart.carts">
             {{ cart.carts.length }}
           </div>
         </a>
-        <dropdown :cart="cart" @get-cart="getCart"></dropdown>
+        <DropDown :cart="cart" @get-cart="getCart" ref="dropdown"></DropDown>
       </div>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav align-items-center fs-5 ms-auto mb-2 mb-lg-0">
-          <router-link class="nav-link" to="/">首頁</router-link>
           <router-link class="nav-link" to="/about">關於我們</router-link>
           <router-link class="nav-link" to="/products">餐點選購</router-link>
         </div>
@@ -27,8 +26,8 @@
 </template>
 
 <script>
-import emitter from '../assets/js/mitt'
-import dropdown from '../components/DropDownModal.vue'
+import emitter from '@/assets/js/mitt'
+import DropDown from '@/components/Front/DropDownModal.vue'
 
 export default {
   data () {
@@ -42,7 +41,7 @@ export default {
     }
   },
   components: {
-    dropdown
+    DropDown
   },
   methods: {
     getCart () {
@@ -54,8 +53,21 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法取得購物車列表，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
+    },
+    toggleDropDown () {
+      this.$refs.dropdown.toggleDropDown()
     },
     scrollFunction () {
       const windowY = window.scrollY
@@ -86,6 +98,9 @@ export default {
   },
   unmounted () {
     window.removeEventListener('scroll', this.scrollFunction)
+    emitter.off('product-cart', () => {
+      this.getCart()
+    })
   }
 }
 </script>

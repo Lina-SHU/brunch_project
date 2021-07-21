@@ -10,10 +10,12 @@
     <div class="container my-5">
       <div class="row">
         <div class="col-md-6">
-          <img src="https://i.imgur.com/RrMajqK.jpg" alt="login-img" class="img-fiuld login-image w-100 shadow">
+          <img src="https://storage.googleapis.com/vue-course-api.appspot.com/linachen/1626833791729.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=KkqI8R0vL4RtV6NFEpN43ZZfgIAq8i%2FLTB9jVDo0DwiWoVMXJbZjEcQsQTxODTeLPmLViAp6sQEJMU8zMI5%2F8Am5j1v8TL3jrmJl4GF5IiaX5ku5o%2FKl5bE45Aw0J08giiUUG5HP1RJGD1d%2FQ6wXgguP5OxiPQm0WeJmAGDEkoEoQ1W7hSHKXI86gXOfvBOpygiJF2ZoQrDIqPj0vdeOm2FQoIH9g4vBwjpVNUnYv3BkzADu0Pjp24BmPyQdNEuAvFCkBISKfaWRYWXo90JsHh%2B3C5Px3rhd3GVgUytlNFHurCKIulv8lUuaZuQgPYlEM6tYlCyJOnPy2XsdGTFA2w%3D%3D" alt="login-img" class="img-fiuld login-image w-100 shadow">
         </div>
         <div class="col-md-6 d-flex-center flex-column mt-3 mt-lg-0">
-          <h3 class="mb-4 text-primary"><strong class="border-bottom border-primary d-inline-block border-4 pb-2">後台管理登入</strong></h3>
+          <h3 class="mb-4 text-primary">
+            <strong class="border-bottom border-primary d-inline-block border-4 pb-2">後台管理登入</strong>
+          </h3>
           <Form v-slot="{ errors }" @submit="onSubmit">
             <div class="mb-3">
               <label for="email">Email</label>
@@ -30,12 +32,12 @@
         </div>
       </div>
     </div>
-    <footerSection></footerSection>
+    <FooterSection></FooterSection>
   </div>
 </template>
 
 <script>
-import footerSection from '../../components/Footer.vue'
+import FooterSection from '@/components/Front/Footer.vue'
 
 export default {
   data () {
@@ -44,10 +46,10 @@ export default {
     }
   },
   components: {
-    footerSection
+    FooterSection
   },
   methods: {
-    onSubmit (values) {
+    onSubmit () {
       const url = `${process.env.VUE_APP_API}admin/signin`
       this.$http.post(url, this.user)
         .then(res => {
@@ -67,7 +69,16 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.$swal({
+              toast: true,
+              title: '無法登入，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     }
   }

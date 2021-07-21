@@ -1,16 +1,6 @@
 <template>
   <section>
-    <loading v-model:active="isLoading">
-      <div class="loadingio-spinner-ellipsis-rg3crixpxzh">
-        <div class="ldio-zmt4lrj3aj">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </loading>
+    <Loading :is-loading="isLoading"></Loading>
     <div class="index-heroheader mb-6 position-relative">
       <div class="container h-100 d-flex-center flex-column align-items-center">
         <div data-aos="fade-up" class="text-white bg-black text-center px-lg-6 py-lg-4 p-3">
@@ -26,27 +16,31 @@
       </div>
     </div>
     <div class="container mb-6">
-      <h2 class="text-center mb-4 text-primary"><strong class="border-bottom border-primary d-inline-block border-4 pb-2">新品上市</strong></h2>
+      <h2 class="text-center mb-4 text-primary">
+        <strong class="border-bottom border-primary d-inline-block border-4 pb-2">新品上市</strong>
+      </h2>
       <div class="row g-0">
         <div data-aos="fade-up" class="col-lg-4 text-primary bg-secondary d-flex flex-column" v-for="(news, index) in newProduct" :key="news.id">
           <div class="hot-wrap" style="overflow: hidden;" :class="{ 'order-lg-2': index===1 }">
             <router-link :to="{path: `/product/${news.id}`}">
-            <div class="hot-img d-block" :style="{ 'background-image' : `url(${news.imageUrl}` }" style="background-size: cover; background-position: 20% center;"></div>
-          </router-link>
+              <div class="hot-img d-block" :style="{ 'background-image' : `url(${news.imageUrl}` }" style="background-size: cover; background-position: 20% center;"></div>
+            </router-link>
           </div>
           <div class="hot-content text-center p-5 d-flex align-items-center flex-column" :class="{ 'order-lg-1': index===1 }">
             <h3>{{ news.title }}</h3>
             <small>{{ news.category }}</small>
             <p class="w-lg-75 text-start mt-2">{{ news.content }}</p>
-            <router-link to="/products" class="btn btn-primary btn-sm px-3 rounded-pill">查看更多</router-link>
+            <router-link :to="{path: `/product/${news.id}`}" class="btn btn-primary btn-sm px-3 rounded-pill">查看更多</router-link>
           </div>
         </div>
       </div>
     </div>
-    <couponSection></couponSection>
+    <CouponSection></CouponSection>
     <div class="hot-sale bg-secondary py-6">
       <div class="container">
-        <h2 class="text-center mb-4 text-primary"><strong  class="border-bottom border-primary d-inline-block border-4 pb-2">經典熱銷</strong></h2>
+        <h2 class="text-center mb-4 text-primary">
+          <strong class="border-bottom border-primary d-inline-block border-4 pb-2">經典熱銷</strong>
+        </h2>
         <swiper
           :slides-per-view="3"
           :space-between="30"
@@ -69,7 +63,7 @@
           }"
         >
           <swiper-slide v-for="hot in hotProduct" :key="hot.id">
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow-sm border-0 h-100">
               <div class="card-img position-relative">
                 <div class="product-content position-absolute">
                   <router-link :to="{path: `/product/${hot.id}`}" class="text">{{ hot.content }}</router-link>
@@ -90,16 +84,17 @@
         </swiper>
       </div>
     </div>
-    <cta></cta>
-    <footerSection></footerSection>
+    <CTA></CTA>
+    <FooterSection></FooterSection>
   </section>
 </template>
 
 <script>
-import couponSection from '../../components/Coupon.vue'
-import footerSection from '../../components/Footer.vue'
-import cta from '../../components/CallToAction.vue'
-import emitter from '../../assets/js/mitt'
+import CouponSection from '@/components/Front/Coupon.vue'
+import FooterSection from '@/components/Front/Footer.vue'
+import CTA from '@/components/Front/CallToAction.vue'
+import Loading from '@/components/Front/Loading.vue'
+import emitter from '@/assets/js/mitt'
 
 export default {
   data () {
@@ -113,9 +108,10 @@ export default {
     }
   },
   components: {
-    couponSection,
-    cta,
-    footerSection
+    CouponSection,
+    CTA,
+    FooterSection,
+    Loading
   },
   methods: {
     getProduct () {
@@ -124,16 +120,22 @@ export default {
         .then(res => {
           if (res.data.success) {
             const data = res.data.products
-            this.newProduct = data.filter(item => {
-              return item.newArrival
-            })
-            this.hotProduct = data.filter(item => {
-              return item.hotProduct
-            })
+            this.newProduct = data.filter(item => item.newArrival)
+            this.hotProduct = data.filter(item => item.hotProduct)
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法取得餐點，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     },
     addToCart (id, qty = 1) {
@@ -161,7 +163,17 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          if (err) {
+            this.isLoading = false
+            this.$swal({
+              toast: true,
+              title: '無法加入購物車，請聯繫管理員',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              position: 'top'
+            })
+          }
         })
     }
   },
