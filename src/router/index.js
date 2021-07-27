@@ -40,6 +40,10 @@ const routes = [
       {
         path: 'login',
         component: () => import('../views/Front/Login.vue')
+      },
+      {
+        path: 'favorite',
+        component: () => import('../views/Front/Favorite.vue')
       }
     ]
   },

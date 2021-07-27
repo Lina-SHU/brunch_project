@@ -4,8 +4,16 @@
       <button class="navbar-toggler px-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="material-icons" style="font-size:28px;">menu</span>
       </button>
-      <router-link class="navbar-brand me-0 me-lg-1 flex-fill text-center text-lg-start" to="/"><h1 class="logo m-0" :class="classList['text-color']">FRESHBRUNCH</h1></router-link>
-      <div class="dropdown cart-icon order-2">
+      <router-link class="navbar-brand me-0 me-lg-1 flex-fill text-center text-lg-start" to="/"><h1 class="logo mb-0 pe-5 pe-md-0" :class="classList['text-color']">FRESHBRUNCH</h1></router-link>
+      <div class="dropdown cart-icon order-2 align-items-center d-flex">
+        <router-link to="/favorite" class="d-inline-block favorite-icon position-relative">
+          <i class="material-icons" style="font-size:32px;" :class="classList['i-color']">
+            favorite
+          </i>
+          <div class="favorite-number rounded-pill bg-danger text-white position-absolute px-2" v-if="favorites">
+            {{ favorites.length }}
+          </div>
+        </router-link>
         <a href="#" class="btn btn-secondary position-relative border-0 dropdown-btn px-2" type="button" :class="classList['bg-color']" data-bs-toggle="dropdown" data-bs-display="static">
           <i class="material-icons" style="font-size:28px;" :class="classList['i-color']">shopping_cart</i>
           <div class="cart-number rounded-pill bg-danger text-white position-absolute px-2" v-if="cart.carts">
@@ -28,6 +36,7 @@
 <script>
 import emitter from '@/assets/js/mitt'
 import DropDown from '@/components/Front/DropDownModal.vue'
+import favoriteMethods from '@/assets/js/favoriteStorage'
 
 export default {
   data () {
@@ -37,7 +46,8 @@ export default {
         'bg-color': 'bg-secondary',
         'text-color': 'text-primary',
         'i-color': ''
-      }
+      },
+      favorites: favoriteMethods.get() || 0
     }
   },
   components: {
@@ -88,15 +98,17 @@ export default {
   },
   mounted () {
     this.getCart()
-    emitter.on('product-cart', () => {
-      this.getCart()
+    emitter.on('product-cart', () => this.getCart())
+    emitter.on('favorite', () => {
+      this.favorites = favoriteMethods.get()
     })
     window.addEventListener('scroll', this.scrollFunction)
   },
   unmounted () {
     window.removeEventListener('scroll', this.scrollFunction)
-    emitter.off('product-cart', () => {
-      this.getCart()
+    emitter.off('product-cart', () => this.getCart())
+    emitter.off('favorite', () => {
+      this.favorites = favoriteMethods.get()
     })
   }
 }

@@ -55,7 +55,7 @@ a{
   height: 300px;
 }
 
-.product-content{
+.card-content{
   top: 300px;
   bottom: 0;
   left: 0;
@@ -70,7 +70,7 @@ a{
 .card-img{
   cursor: pointer;
   overflow: hidden;
-  &:hover .product-content{
+  &:hover .card-content{
     opacity: 0.8;
     top: 0;
   }
@@ -86,11 +86,34 @@ a{
   }
 }
 
+.btn:focus,.btn:active {
+   outline: none;
+   box-shadow: none;
+}
 
 .addCartBtn:hover{
   background: $primary;
   .material-icons{
     color: $white;
+  }
+}
+
+.addFavoriteBtn{
+  .material-icons{
+    font-size: 28px;
+  }
+  &:hover{
+    .material-icons{
+      color: rgba(red, .7);
+    }
+  }
+  &:active{
+    .material-icons{
+      transform: translateY(4px);
+    }
+  }
+  .clickFavorite{
+    color: rgba(red, .7);
   }
 }
 
@@ -125,6 +148,15 @@ a{
   top: -2px;
   right: -2px;
 }
+
+.favorite-icon{
+  width: 44px;
+  .favorite-number{
+    top: -6px;
+    right: 0px;
+  }
+}
+
 
 .dropdown-btn:focus{
   box-shadow: none;

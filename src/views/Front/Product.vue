@@ -17,22 +17,34 @@
         </ol>
       </nav>
       <div class="row mb-5">
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <div class="product-img shadow" :style="{ 'background-image' : `url(${product.imageUrl}` }" style="background-size: cover; background-position: 30% center;"></div>
         </div>
-        <div class="col-md-6 mt-4 mt-lg-0">
-          <h2 class="text-primary fw-bold mb-3 h1">{{ product.title }}</h2>
+        <div class="col-lg-6 mt-4 mt-lg-0">
+          <div class=" d-flex align-items-center mb-3">
+            <h2 class="text-primary fw-bold mb-0 h1">
+              {{ product.title }}
+            </h2>
+            <div class="favorite-icon ms-3">
+              <a href="#" class="btn addFavoriteBtn" @click.prevent="addMyFavorite(product)">
+                <i class="material-icons clickFavorite" v-if="favorites.includes(product.id)">favorite</i>
+                <i class="material-icons" v-else>favorite_border</i>
+              </a>
+            </div>
+          </div>
           <p class="w-75">{{ product.content }}</p>
           <p v-if="product.category !== '飲品'">隨餐附贈：紅茶、薯條</p>
           <p class="d-inline fw-bold card-text text-danger fs-5">優惠價：{{ product.price }} 元</p>
           <del class="ms-2">原價： {{ product.origin_price }} 元</del>
-          <div class="input-group mb-3 mt-5 w-lg-50">
+          <div class="d-flex align-items-center mt-5">
+            <div class="input-group w-lg-50">
             <button class="btn btn-outline-primary" type="button" @click="changeQty('minus')" :class="{ disabled: qty <= 1 }"><i class="material-icons">remove</i></button>
-            <input type="number" min="1" class="form-control qty-input" disabled v-model.number="qty">
-            <button class="btn btn-outline-primary" type="button" @click="changeQty('add')">
-              <i class="material-icons">add</i>
-            </button>
-            <a href="#" @click.prevent="addToCart"><i class="material-icons ms-4 btn-outline-primary border-0 rounded-2 p-1" style="font-size:40px;">add_shopping_cart</i></a>
+              <input type="number" min="1" class="form-control qty-input" disabled v-model.number="qty">
+              <button class="btn btn-outline-primary" type="button" @click="changeQty('add')">
+                <i class="material-icons">add</i>
+              </button>
+            </div>
+            <a href="#" class="ms-2 py-1 btn btn-outline-primary border-0 fw-bold d-flex align-items-center" @click.prevent="addToCart"><i class="material-icons border-0 rounded-2 p-1" style="font-size:28px;">add_shopping_cart</i>加入購物車</a>
           </div>
         </div>
       </div>
@@ -61,10 +73,10 @@
           <strong data-aos="flip-up" class="border-bottom border-primary d-inline-block border-4 pb-2">同系列餐點</strong>
         </h2>
         <div class="row mt-5">
-          <div class="col-md-3 mb-2" v-for="product in filterProducts" :key="product.id">
+          <div class="col-md-4 mb-2" v-for="product in filterProducts" :key="product.id">
             <div class="card h-100 shadow border-0">
               <div class="card-img position-relative">
-                <div class="product-content position-absolute">
+                <div class="card-content position-absolute">
                   <a href="#" class="text" @click.prevent="goToProduct(`${product.id}`)">{{ product.content }}</a>
                 </div>
                 <div class="new-img" :style="{ 'background-image' : `url(${product.imageUrl}` }" style="background-size: cover; background-position: 20% center;"></div>
@@ -76,7 +88,15 @@
                     <del class="me-2">原價： {{ product.origin_price }} 元</del>
                     <p class="fw-bold card-text text-danger fs-5">優惠價：{{ product.price }} 元</p>
                   </div>
-                  <a href="#" class="btn addCartBtn" @click.prevent="addToCart(product.id)"><i class="material-icons" style="font-size:32px;">add_shopping_cart</i></a>
+                  <div class="product-icons d-flex align-tiems-center">
+                    <a href="#" class="btn addFavoriteBtn" @click.prevent="addMyFavorite(product)">
+                      <i class="material-icons clickFavorite" v-if="favorites.includes(product.id)">favorite</i>
+                      <i class="material-icons" v-else>favorite_border</i>
+                    </a>
+                    <a href="#" class="btn addCartBtn" @click.prevent="addToCart(favorite.id)">
+                      <i class="material-icons" style="font-size:28px;">add_shopping_cart</i>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -90,6 +110,7 @@
 
 <script>
 import emitter from '@/assets/js/mitt'
+import favoriteMethods from '@/assets/js/favoriteStorage'
 import FooterSection from '@/components/Front/Footer.vue'
 import ProductMaterial from '@/components/Front/ProductMaterial.vue'
 import Loading from '@/components/Front/Loading.vue'
@@ -105,10 +126,8 @@ export default {
       qty: 1,
       products: [],
       filterProducts: [],
-      autoplay: {
-        delay: 3000
-      },
-      isLoading: false
+      isLoading: false,
+      favorites: favoriteMethods.get() || []
     }
   },
   components: {
@@ -169,7 +188,7 @@ export default {
     },
     getSameCategory () {
       const filterData = this.products.filter((item) => item.category === this.product.category)
-      const maxSize = filterData.length < 4 ? filterData.length : 4
+      const maxSize = filterData.length < 3 ? filterData.length : 3
       const arrSet = new Set([])
       for (let i = 0; arrSet.size < maxSize; i++) {
         const num = getRandomInt(filterData.length)
@@ -227,6 +246,23 @@ export default {
     },
     goToProduct (id) {
       this.$router.push(`/product/${id}`)
+    },
+    addMyFavorite (item) {
+      if (this.favorites.includes(item.id)) {
+        this.favorites.splice(this.favorites.indexOf(item.id), 1)
+      } else {
+        this.favorites.push(item.id)
+        this.$swal({
+          toast: true,
+          title: '已加入我的最愛',
+          icon: 'success',
+          timer: 1000,
+          showConfirmButton: false,
+          position: 'top'
+        })
+      }
+      favoriteMethods.save(this.favorites)
+      emitter.emit('favorite')
     }
   },
   created () {

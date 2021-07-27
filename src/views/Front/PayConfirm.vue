@@ -1,5 +1,6 @@
 <template>
   <section>
+    <Loading :is-loading="isLoading"></Loading>
     <div class="carts-heroheader mb-5">
       <div class="container">
         <h2 data-aos="flip-up" class="text-white position-absolute top-50 bg-black px-5 py-2 lh-base">
@@ -55,7 +56,7 @@
             </ul>
             <div class="d-flex justify-content-between">
               <p class="fs-4 fw-bold">總計</p>
-              <p class="fs-4 fw-bold">NT ${{ $toCurrency(`${order.total}`) }}</p>
+              <p class="fs-4 fw-bold">NT ${{ $toCurrency(`${order.total}`) }} </p>
             </div>
           </div>
           <div class="bg-secondary p-4 mb-5">
@@ -101,22 +102,29 @@
 
 <script>
 import FooterSection from '@/components/Front/Footer.vue'
+import Loading from '@/components/Front/Loading.vue'
 
 export default {
   data () {
     return {
-      order: {}
+      order: {
+        total: 0
+      },
+      isLoading: false
     }
   },
   components: {
-    FooterSection
+    FooterSection,
+    Loading
   },
   methods: {
     getOrder () {
+      this.isLoading = true
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order/${this.$route.params.id}`
       this.$http.get(url)
         .then(res => {
           if (res.data.success) {
+            this.isLoading = false
             this.order = res.data.order
           }
         })

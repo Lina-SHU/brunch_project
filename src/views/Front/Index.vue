@@ -65,7 +65,7 @@
           <swiper-slide v-for="hot in hotProduct" :key="hot.id">
             <div class="card shadow-sm border-0 h-100">
               <div class="card-img position-relative">
-                <div class="product-content position-absolute">
+                <div class="card-content position-absolute">
                   <router-link :to="{path: `/product/${hot.id}`}" class="text">{{ hot.content }}</router-link>
                 </div>
                 <div class="new-img" :style="{ 'background-image' : `url(${hot.imageUrl}` }" style="background-size: cover; background-position: 20% center;"></div>

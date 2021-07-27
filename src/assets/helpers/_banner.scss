@@ -62,3 +62,9 @@
   height: 300px;
   @include banner();
 }
+
+.favorite-heroheader{
+  background: url('https://storage.googleapis.com/vue-course-api.appspot.com/linachen/1627354604292.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=oaabV6EMaH16rCM7BTOtwCw1NAiNbx67p5LDVcf8tqi%2FkamJNwlVJIZ8Snymmy2cntIeaqG%2BuZV2A8alEaPg431FCFCfFQQFvme%2BwErurRmel9GhoQzpIOvmYoQAhch7lBytum16mmRkEA19xyE1HXHN62BUMjTSoSEm0fxfWwIcpNCfVNMq57qHGnk1rsv2%2FA2Url%2F1c2BLDnj%2FSQNRJ20GGGnCFO3gMZijBKld%2B63Ukq3MTHl%2FqUI6onNvENwcizu6YZja9TuO36xj74jmtfymL%2B8c53zJx38UVa3ukxj86C0kSGD%2BE9%2Bv276238l%2BkcNCiXsYEZvnbk%2Fug7BkSA%3D%3D') no-repeat;
+  height: 300px;
+  @include banner();
+}

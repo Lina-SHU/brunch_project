@@ -104,7 +104,9 @@ import Loading from '@/components/Front/Loading.vue'
 export default {
   data () {
     return {
-      order: {},
+      order: {
+        total: 0
+      },
       isLoading: false
     }
   },
@@ -114,10 +116,12 @@ export default {
   },
   methods: {
     getOrder () {
+      this.isLoading = true
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order/${this.$route.params.id}`
       this.$http.get(url)
         .then(res => {
           if (res.data.success) {
+            this.isLoading = false
             this.order = res.data.order
           }
         })
@@ -149,6 +153,7 @@ export default {
               showConfirmButton: false,
               position: 'top'
             })
+            this.isLoading = false
             this.$router.push(`/order/${this.$route.params.id}/payConfirm`)
           }
         })

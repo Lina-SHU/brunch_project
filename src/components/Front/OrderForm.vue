@@ -12,7 +12,7 @@
     </div>
     <div class="mb-3">
       <label for="ClientTel">訂購人電話 <span class="text-danger">*</span></label>
-      <Field type="text" class="form-control border-0 bg-secondary" name="您的電話" id="ClientTel" :class="{ 'is-invalid': errors['您的電話'] }" rules="min:8|required" placeholder="請輸入電話" v-model.trim="user.tel"></Field>
+      <Field type="tel" class="form-control border-0 bg-secondary" name="您的電話" id="ClientTel" :class="{ 'is-invalid': errors['您的電話'] }" rules="min:8|required" placeholder="請輸入電話" v-model.trim="user.tel"></Field>
       <error-message name="您的電話" class="invalid-feedback"></error-message>
     </div>
     <div class="mb-3">
