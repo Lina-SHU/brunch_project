@@ -158,6 +158,14 @@ export default {
       favoriteMethods.save(this.favorites)
       emitter.emit('favorite')
       this.getFavorites()
+      this.$swal({
+        toast: true,
+        title: '清空收藏囉！',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false,
+        position: 'top'
+      })
     },
     scrollTop () {
       const windowY = window.scrollY
