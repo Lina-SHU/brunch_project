@@ -3,15 +3,15 @@
     <div v-if="cartList.carts && cartList.carts.length !== 0">
       <div v-for="cart in cartList.carts" :key="cart.id+'1'" class="mb-3">
         <div class="d-flex justify-content-between align-items-center">
-          <div class="cart-content d-flex">
+          <div class="cart-content d-flex align-items-center">
             <a href="#" @click.prevent="deleteCart(cart.id)" class=" d-flex-center align-items-center"><i class="btn-outline-danger border-0 rounded-2 material-icons p-1">delete</i></a>
-            <div :style="{ 'background-image' : `url(${cart.product.imageUrl}` }" style="background-size: cover; background-position: center center; height: 50px; width: 80px;"></div>
+            <div :style="{ 'background-image' : `url(${cart.product.imageUrl}` }" style="background-size: cover; background-position: center center; height: 50px; width: 70px;"></div>
             <div class="cart-item ms-2">
               <router-link :to="{ path: `/product/${cart.product.id}`}" class="cartProduct fs-6 m-0">{{ cart.product.title }}</router-link>
-              <small class="fs-6">${{ $toCurrency(`${cart.total}`) }}</small>
+              <small class="d-block fs-6">${{ $toCurrency(`${cart.total}`) }}</small>
             </div>
           </div>
-          <div class="input-group input-group-sm w-40">
+          <div class="input-group input-group-sm w-35">
             <button class="btn btn-sm btn-outline-primary" type="button" :class="{ disabled: cart.qty <= 1 }"><i class="material-icons" @click="editCart(cart, cart.qty-1)" style="width: 24px;">remove</i></button>
             <input type="number" min="1" class="form-control qty-input" disabled v-model.number="cart.qty">
             <button class="btn btn-sm btn-outline-primary" type="button" @click="editCart(cart, cart.qty+1)"><i class="material-icons" style="width: 24px;">add</i></button>

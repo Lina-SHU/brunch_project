@@ -13,6 +13,7 @@
     </div>
     <div class="container pb-6">
       <h3 class="text-center my-5 text-primary"><strong data-aos="flip-up" class="border-bottom border-primary d-inline-block border-4 pb-2">我的最愛</strong></h3>
+      <button v-if="favoriteList && favoriteList.length >=2" class="btn btn-outline-danger border-0 d-flex align-items-center mb-3" @click.prevent="deleteAllFavorite"><i class="material-icons me-2">delete</i>刪除所有收藏</button>
       <div class="row mt-3 d-flex-center" v-if="favoriteList && favoriteList.length !== 0">
         <div class="col-lg-4 col-xl-3 mb-4" v-for="favorite in favoriteList" :key="favorite.id">
           <div class="card h-100 shadow border-0">
@@ -151,6 +152,12 @@ export default {
             })
           }
         })
+    },
+    deleteAllFavorite () {
+      this.favorites = []
+      favoriteMethods.save(this.favorites)
+      emitter.emit('favorite')
+      this.getFavorites()
     },
     scrollTop () {
       const windowY = window.scrollY

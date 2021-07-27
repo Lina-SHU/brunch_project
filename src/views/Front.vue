@@ -14,7 +14,7 @@
             {{ favorites.length }}
           </div>
         </router-link>
-        <a href="#" class="btn btn-secondary position-relative border-0 dropdown-btn px-2" type="button" :class="classList['bg-color']" data-bs-toggle="dropdown" data-bs-display="static">
+        <a href="#" class="position-relative border-0 dropdown-btn px-2" type="button" :class="classList['bg-color']" data-bs-toggle="dropdown" data-bs-display="static">
           <i class="material-icons" style="font-size:28px;" :class="classList['i-color']">shopping_cart</i>
           <div class="cart-number rounded-pill bg-danger text-white position-absolute px-2" v-if="cart.carts">
             {{ cart.carts.length }}
