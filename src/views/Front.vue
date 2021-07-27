@@ -47,7 +47,7 @@ export default {
         'text-color': 'text-primary',
         'i-color': ''
       },
-      favorites: favoriteMethods.get() || 0
+      favorites: favoriteMethods.get() || []
     }
   },
   components: {
